@@ -34,7 +34,7 @@ export const MainNode: FC<Props> = ({
     }),
   });
 
-  const [{ canDrop, isOver }, drop] = useDrop({
+  const [__, drop] = useDrop({
     accept: 'NODE',
     drop: (item: DropItem) => {
       onChangePosition(item.id, id);
@@ -45,7 +45,7 @@ export const MainNode: FC<Props> = ({
     }),
   });
 
-  const [{ canDrop: canDropTop }, topDrop] = useDrop({
+  const [_, topDrop] = useDrop({
     accept: 'NODE',
     drop: (item: DropItem) => {
       onChangePositionAbove(item.id, id);
@@ -68,15 +68,15 @@ export const MainNode: FC<Props> = ({
     <div key={id} className="relative">
       {showDropComponent && !isStart && (
         <div
-          className="w-fit p-2 bg-white border border-black rounded-md border-dashed absolute -top-[70px] left-0"
+          className="absolute -top-[70px] left-0 w-fit rounded-md border border-dashed border-black bg-white p-2"
           ref={topDrop}>
           <div>{`Soltar acima de node ${id}`}</div>
         </div>
       )}
-      <div className="absolute text-center normal-case text-sm inline-block left-0 -top-7 shadow-md rounded-md">
+      <div className="absolute -top-7 left-0 inline-block rounded-md text-center text-sm normal-case shadow-md">
         <div className="relative">
           <div
-            className="rotate-45 absolute z-10"
+            className="absolute z-10 rotate-45"
             style={{
               left: 13,
               bottom: -2,
@@ -88,23 +88,23 @@ export const MainNode: FC<Props> = ({
             }}
           />
           <div
-            className="max-w-[200px] text-black text-center bg-white rounded px-2 py-[3px] z-50"
+            className="z-50 max-w-[200px] rounded bg-white px-2 py-[3px] text-center text-black"
             style={{ zIndex: 999 }}>
             {isStart ? 'Welcome' : `node ${id}`}
           </div>
         </div>
       </div>
 
-      <div ref={drag}>
+      <div ref={!isStart ? drag : undefined}>
         <div
           className={clsx(
-            'flex rounded-full w-14 h-14 justify-center items-center',
+            'flex h-14 w-14 items-center justify-center rounded-full',
             {
               'bg-[#2A4383]': isStart,
               'bg-[#4B76FE]': !isStart,
             },
           )}>
-          <span className="text-white text-sm">
+          <span className="text-sm text-white">
             <MdSend size={22} />
           </span>
         </div>
@@ -126,13 +126,13 @@ export const MainNode: FC<Props> = ({
           <div className="h-24">
             {showDropComponent ? (
               <div
-                className="w-36 p-2 bg-white border border-black rounded-md border-dashed"
+                className="w-36 rounded-md border border-dashed border-black bg-white p-2"
                 ref={drop}>
                 <div>{`Soltar como último filho de node ${id}`}</div>
               </div>
             ) : (
               <button
-                className="w-7 h-7 rounded-full border border-gray-500 border-dotted text-xl/[0px] items-center justify-center bg-gray-100 text-gray-600"
+                className="h-7 w-7 items-center justify-center rounded-full border border-dotted border-gray-500 bg-gray-100 text-xl/[0px] text-gray-600"
                 onClick={() => onPressAdd(id)}>
                 +
               </button>

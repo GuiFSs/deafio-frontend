@@ -88,7 +88,8 @@ export default function Home() {
   const changeNode = (fromNode: Node, toNode: Node, parentNode: Node) => {
     const isTheSameParent = parentNode.id === toNode.id;
     const isTheSameNode = fromNode.id === toNode.id;
-    if (isTheSameParent || isTheSameNode) return;
+    const isChildren = !!findNodeById(toNode.id, fromNode);
+    if (isTheSameParent || isTheSameNode || isChildren) return;
     toNode.children.push(fromNode);
     parentNode.children = parentNode.children.filter(
       (n) => n.id !== fromNode.id,
@@ -99,7 +100,7 @@ export default function Home() {
   return (
     <main>
       <DndProvider backend={HTML5Backend}>
-        <div className="py-12 px-4 pl-16">
+        <div className="px-4 py-12 pl-16">
           <MainNode
             node={nodeTree}
             onPressAdd={addNewNode}
