@@ -97,6 +97,13 @@ export default function Home() {
     setNodeTree({ ...nodeTree });
   };
 
+  const onDeleteNode = (nodeId: string) => {
+    const node = findParentNodeById(nodeId, nodeTree);
+    if (!node) return;
+    node.children = node.children.filter((n) => n.id !== nodeId);
+    setNodeTree({ ...nodeTree });
+  };
+
   return (
     <main>
       <DndProvider backend={HTML5Backend}>
@@ -108,6 +115,7 @@ export default function Home() {
             setIsDragging={setIsDragging}
             onChangePosition={onChangeNodePosition}
             onChangePositionAbove={onChangeNodePositionAbove}
+            onDeleteNode={onDeleteNode}
           />
         </div>
       </DndProvider>

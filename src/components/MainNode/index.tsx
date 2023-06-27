@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import { FC, useEffect, useMemo } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { MdSend } from 'react-icons/md';
+import { FiTrash } from 'react-icons/fi';
 
 type DropItem = {
   type: string;
@@ -16,6 +17,7 @@ type Props = {
   onChangePosition(fromNodeId: string, toNodeId: string): void;
   onChangePositionAbove(fromNodeId: string, toNodeChildId: string): void;
   setIsDragging(value: boolean): void;
+  onDeleteNode(id: string): void;
 };
 
 export const MainNode: FC<Props> = ({
@@ -25,6 +27,7 @@ export const MainNode: FC<Props> = ({
   setIsDragging,
   onChangePosition,
   onChangePositionAbove,
+  onDeleteNode,
 }) => {
   const [{ isDragging }, drag] = useDrag({
     type: 'NODE',
@@ -95,7 +98,7 @@ export const MainNode: FC<Props> = ({
         </div>
       </div>
 
-      <div ref={!isStart ? drag : undefined}>
+      <div className="flex flex-row" ref={!isStart ? drag : undefined}>
         <div
           className={clsx(
             'flex h-14 w-14 items-center justify-center rounded-full',
@@ -107,6 +110,11 @@ export const MainNode: FC<Props> = ({
           <span className="text-sm text-white">
             <MdSend size={22} />
           </span>
+        </div>
+        <div
+          className="cursor-pointer p-2 opacity-0 hover:opacity-100"
+          onClick={() => onDeleteNode(id)}>
+          <FiTrash />
         </div>
       </div>
 
@@ -121,6 +129,7 @@ export const MainNode: FC<Props> = ({
               setIsDragging={setIsDragging}
               onChangePosition={onChangePosition}
               onChangePositionAbove={onChangePositionAbove}
+              onDeleteNode={onDeleteNode}
             />
           ))}
           <div className="h-24">
